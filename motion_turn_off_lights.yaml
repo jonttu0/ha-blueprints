@@ -2,7 +2,7 @@ blueprint:
   name: Turn off motion lights
   description: Turns off lights when motion is cleared
   domain: automation
-  source_url: https://github.com/jonttu0/ha-blueprints/motion_turn_off_lights.yaml
+  source_url: https://github.com/jonttu0/ha-blueprints/blob/main/motion_turn_off_lights.yaml
   author: Jonttu
   input:
     motion_entity:
@@ -25,9 +25,10 @@ blueprint:
       description: Time to wait after motion is cleared before lights turn off
       default: 60
       selector:
-        number: 0
-        max: 10800
-        unit_of_measurement: seconds
+        number:
+          min: 0
+          max: 10800
+          unit_of_measurement: seconds
 
 mode: restart
 max_exceeded: silent
