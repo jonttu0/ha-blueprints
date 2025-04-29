@@ -42,5 +42,6 @@ triggers:
 actions:
   - alias: "Wait the number of seconds that has been set"
     delay: !input no_motion_wait
+  - alias: "Turn off the light"
     action: light.turn_off
     target: !input light_target
