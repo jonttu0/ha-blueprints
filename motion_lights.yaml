@@ -1,0 +1,62 @@
+blueprint:
+  name: Motion lights
+  description: Turns off lights when motion is cleared
+  domain: automation
+  source_url: https://github.com/jonttu0/ha-blueprints/blob/main/motion_lights.yaml
+  author: Jonttu
+  input:
+    motion_entity:
+      name: Motion Sensor
+      selector:
+        entity:
+          filter:
+            - device_class: occupancy
+              domain: binary_sensor
+            - device_class: motion
+              domain: binary_sensor
+    turn_on_light:
+      name: Lights to turn on
+      selector:
+        target:
+          entity:
+            domain: light
+    turn_off_light:
+      name: Light to turn off
+      selector:
+        target:
+          entity:
+            domain: light
+    no_motion_wait:
+      name: Wait time
+      description: Time to wait after motion is cleared before lights turn off
+      default: 60
+      selector:
+        number:
+          min: 0
+          max: 10800
+          unit_of_measurement: seconds
+
+mode: restart
+max_exceeded: silent
+
+triggers:
+  - trigger: state
+    entity_id: !input motion_entity
+    to: "off"
+    for:
+      seconds: !input no_motion_wait
+  - trigger: state
+    entity_id: !input motion_entity
+    to: "on"
+
+actions:
+  - if:
+      - condition: state
+        entity_id: !input motion_entity
+        state: "on"
+    then:
+      - action: light.turn_on
+        target: !input turn_on_light
+    else:
+      - action: light.turn_off
+        target: !input turn_off_light
