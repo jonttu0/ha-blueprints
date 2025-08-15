@@ -5,6 +5,11 @@ blueprint:
   source_url: https://github.com/jonttu0/ha-blueprints/blob/main/motion_lights.yaml
   author: Jonttu
   input:
+    only_at_night:
+      name: Turn light on only at night
+      description: When selected motion turns lights on only at night
+      selector:
+        boolean:
     motion_entity:
       name: Motion Sensor
       selector:
@@ -55,8 +60,23 @@ actions:
         entity_id: !input motion_entity
         state: "on"
     then:
-      - action: light.turn_on
-        target: !input turn_on_light
+      - if:
+          - condition: or
+            conditions:
+              - condition: and
+                conditions:
+                  - condition: state
+                    entity_id: !input only_at_night
+                    state: "on"
+                  - condition: state
+                    entity_id: sun.sun
+                    state: "below_horizon"
+              - condition: state
+                entity_id: !input only_at_night
+                state: "off"
+        then:
+          - action: light.turn_on
+            target: !input turn_on_light
     else:
       - action: light.turn_off
         target: !input turn_off_light
