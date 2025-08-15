@@ -9,7 +9,9 @@ blueprint:
       name: Turn light on only at night
       description: When selected motion turns lights on only at night
       selector:
-        boolean:
+        entity:
+          filter:
+            domain: input_boolean
     motion_entity:
       name: Motion Sensor
       selector:
