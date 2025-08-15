@@ -55,6 +55,8 @@ triggers:
     to: "on"
 
 actions:
+  - variables:
+      only_at_night: !input only_at_night
   - if:
       - condition: state
         entity_id: !input motion_entity
@@ -63,7 +65,7 @@ actions:
       - if:
           - condition: template
             value_template: >
-              {{ (input.only_at_night | bool and is_state('sun.sun', 'below_horizon')) or (not input.only_at_night | bool) }}
+              {{ (only_at_night | bool and is_state('sun.sun', 'below_horizon')) or (not only_at_night | bool) }}
         then:
           - action: light.turn_on
             target: !input turn_on_light
