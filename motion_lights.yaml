@@ -66,12 +66,12 @@ actions:
               - condition: and
                 conditions:
                   - condition: template
-                    value_template: "{{ !input only_at_night }}"
+                    value_template: "{{ input.only_at_night }}"
                   - condition: state
                     entity_id: sun.sun
                     state: "below_horizon"
               - condition: template
-                value_template: "{{ not !input only_at_night }}"
+                value_template: "{{ not input.only_at_night }}"
         then:
           - action: light.turn_on
             target: !input turn_on_light
