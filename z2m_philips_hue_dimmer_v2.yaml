@@ -1,42 +1,42 @@
 blueprint:
-  name: Philips Hue Dimmer Switch (Z2M)
-  description: Control lights or scenes using a Philips Hue Dimmer Switch via Zigbee2MQTT.
+  name: Philips Hue Dimmer Switch V2 (Z2M Events)
+  description: Control lights using the modern Zigbee2MQTT Event entity.
   domain: automation
   input:
     remote:
       name: Philips Hue Dimmer Switch
-      description: Select the sensor representing the Hue Dimmer (Action sensor).
+      description: Select the EVENT entity (e.g., event.my_switch_action).
       selector:
         entity:
           integration: mqtt
-          domain: sensor
+          domain: event
     on_press:
-      name: On button - Press
+      name: 'On Button - Press'
       default: []
       selector:
         action: {}
     up_press:
-      name: Up button - Press
+      name: 'Up Button - Press'
       default: []
       selector:
         action: {}
     down_press:
-      name: Down button - Press
+      name: 'Down Button - Press'
       default: []
       selector:
         action: {}
     off_press:
-      name: Off button - Press
+      name: 'Off Button - Press'
       default: []
       selector:
         action: {}
     on_hold:
-      name: On button - Hold
+      name: 'On Button - Hold'
       default: []
       selector:
         action: {}
     off_hold:
-      name: Off button - Hold
+      name: 'Off Button - Hold'
       default: []
       selector:
         action: {}
@@ -47,11 +47,11 @@ max_exceeded: silent
 trigger:
   - platform: state
     entity_id: !input remote
-    attribute: action
 
 action:
   - variables:
-      command: "{{ trigger.to_state.state }}"
+      # For events, the button press is stored in the 'event_type' attribute
+      command: "{{ trigger.to_state.attributes.event_type }}"
   - choose:
       # ON Button
       - conditions: "{{ command == 'on-press' }}"
@@ -72,4 +72,3 @@ action:
         sequence: !input off_press
       - conditions: "{{ command == 'off-hold' }}"
         sequence: !input off_hold
-
