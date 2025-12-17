@@ -11,32 +11,32 @@ blueprint:
           integration: mqtt
           domain: sensor
     on_press:
-      name: "On" button - Press
+      name: On button - Press
       default: []
       selector:
         action: {}
     up_press:
-      name: "Up" button - Press
+      name: Up button - Press
       default: []
       selector:
         action: {}
     down_press:
-      name: "Down" button - Press
+      name: Down button - Press
       default: []
       selector:
         action: {}
     off_press:
-      name: "Off" button - Press
+      name: Off button - Press
       default: []
       selector:
         action: {}
     on_hold:
-      name: "On" button - Hold
+      name: On button - Hold
       default: []
       selector:
         action: {}
     off_hold:
-      name: "Off" button - Hold
+      name: Off button - Hold
       default: []
       selector:
         action: {}
@@ -72,3 +72,4 @@ action:
         sequence: !input off_press
       - conditions: "{{ command == 'off-hold' }}"
         sequence: !input off_hold
+
