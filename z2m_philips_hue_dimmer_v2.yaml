@@ -1,0 +1,74 @@
+blueprint:
+  name: Philips Hue Dimmer Switch (Z2M)
+  description: Control lights or scenes using a Philips Hue Dimmer Switch via Zigbee2MQTT.
+  domain: automation
+  input:
+    remote:
+      name: Philips Hue Dimmer Switch
+      description: Select the sensor representing the Hue Dimmer (Action sensor).
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+    on_press:
+      name: "On" button - Press
+      default: []
+      selector:
+        action: {}
+    up_press:
+      name: "Up" button - Press
+      default: []
+      selector:
+        action: {}
+    down_press:
+      name: "Down" button - Press
+      default: []
+      selector:
+        action: {}
+    off_press:
+      name: "Off" button - Press
+      default: []
+      selector:
+        action: {}
+    on_hold:
+      name: "On" button - Hold
+      default: []
+      selector:
+        action: {}
+    off_hold:
+      name: "Off" button - Hold
+      default: []
+      selector:
+        action: {}
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input remote
+    attribute: action
+
+action:
+  - variables:
+      command: "{{ trigger.to_state.state }}"
+  - choose:
+      # ON Button
+      - conditions: "{{ command == 'on-press' }}"
+        sequence: !input on_press
+      - conditions: "{{ command == 'on-hold' }}"
+        sequence: !input on_hold
+
+      # UP Button
+      - conditions: "{{ command == 'up-press' }}"
+        sequence: !input up_press
+
+      # DOWN Button
+      - conditions: "{{ command == 'down-press' }}"
+        sequence: !input down_press
+
+      # OFF Button
+      - conditions: "{{ command == 'off-press' }}"
+        sequence: !input off_press
+      - conditions: "{{ command == 'off-hold' }}"
+        sequence: !input off_hold
