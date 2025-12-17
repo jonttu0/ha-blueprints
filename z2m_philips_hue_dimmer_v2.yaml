@@ -50,25 +50,24 @@ trigger:
 
 action:
   - variables:
-      # For events, the button press is stored in the 'event_type' attribute
-      command: "{{ trigger.to_state.attributes.event_type }}"
+      command: "{{ trigger.to_state.attributes.event_type | default('') }}"
   - choose:
       # ON Button
-      - conditions: "{{ command == 'on-press' }}"
+      - conditions: "{{ command in ['on', 'on-press', 'on_press'] }}"
         sequence: !input on_press
-      - conditions: "{{ command == 'on-hold' }}"
+      - conditions: "{{ command in ['on-hold', 'on_hold'] }}"
         sequence: !input on_hold
 
       # UP Button
-      - conditions: "{{ command == 'up-press' }}"
+      - conditions: "{{ command in ['up-press', 'up_press', 'brightness_move_up'] }}"
         sequence: !input up_press
 
       # DOWN Button
-      - conditions: "{{ command == 'down-press' }}"
+      - conditions: "{{ command in ['down-press', 'down_press', 'brightness_move_down'] }}"
         sequence: !input down_press
 
       # OFF Button
-      - conditions: "{{ command == 'off-press' }}"
+      - conditions: "{{ command in ['off', 'off-press', 'off_press'] }}"
         sequence: !input off_press
-      - conditions: "{{ command == 'off-hold' }}"
+      - conditions: "{{ command in ['off-hold', 'off_hold'] }}"
         sequence: !input off_hold
